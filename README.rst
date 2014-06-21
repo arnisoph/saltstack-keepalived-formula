@@ -2,7 +2,7 @@
 keepalived-formula
 ==================
 
-Salt Stack Formula to set up and configure keepalived, a loadbalancer based on VRRP
+Salt Stack Formula to set up and configure keepalived, a router and loadbalancer based on VRRP
 
 NOTICE BEFORE YOU USE
 =====================

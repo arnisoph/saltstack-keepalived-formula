@@ -3,7 +3,7 @@
 {% from "keepalived/defaults.yaml" import rawmap with context %}
 {% set datamap = salt['grains.filter_by'](rawmap, merge=salt['pillar.get']('keepalived:lookup')) %}
 
-{% set configs = salt['pillar.get']('keepalived:configs', []) -%}
+{% set configs = salt['pillar.get']('keepalived:configs', {}).items() -%}
 
 keepalived:
   pkg:
@@ -17,7 +17,7 @@ keepalived:
 {% for c in datamap.config.manage|default([]) %}
       - file: {{ c }}
 {% endfor %}
-{% for k, v in configs.items() %}
+{% for k, v in configs %}
       - file: {{ k }}
 {% endfor %}
     - require:
@@ -35,7 +35,7 @@ keepalived_conf:
         include /etc/keepalived/conf.d/*.conf
 {% endif %}
 
-{% for k, v in configs.items() %}
+{% for k, v in configs %}
 {{ k }}:
   file:
     - managed
