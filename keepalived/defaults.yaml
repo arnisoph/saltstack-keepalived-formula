@@ -1,0 +1,10 @@
+{% load_yaml as rawmap %}
+Debian:
+  pkgs: []
+  service: []
+  config:
+    manage:
+      - keepalived_conf
+    keepalived_conf: {}
+    configs: {}
+{% endload %}

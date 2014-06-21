@@ -1,0 +1,54 @@
+{%- set configs = salt['pillar.get']('keepalived:configs:' ~ config ~ ':sections', []) -%}
+
+{%- macro set_p_kv(paramname, dictvar) -%}
+  {%- if paramname in dictvar -%}
+{{ paramname }} {{ dictvar[paramname] }}
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro set_p_blocklist(paramname, dictvar) -%}
+  {%- if paramname in dictvar -%}
+{{ paramname ~ ' {\n'}}
+  {%- for i in dictvar[paramname] -%}
+  {{- '  ' ~ i ~'\n' -}}
+  {%- endfor -%}
+}
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro set_p_blockdict(paramname, dictvar, nestedparams) -%}
+  {%- if paramname in dictvar -%}
+{{ paramname ~ ' {\n'}}
+  {%- for n in nestedparams -%}
+  {{ '  ' ~ set_p_kv(n, dictvar[paramname]) ~ '\n' }}
+  {%- endfor -%}
+}
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- for s in configs|default([]) %}
+  {%- if s.type == 'global_defs' %}
+{{ '\n# ' ~ s.comment|default('(No section comment provided)') }}
+{{ s.type }} {
+{{ set_p_blocklist('notification_email', s.settings)|indent(2, True) }}
+  {{ set_p_kv('notification_email_from', s.settings) }}
+  {{ set_p_kv('smtp_server', s.settings) }}
+  {{ set_p_kv('smtp_connect_timeout', s.settings) }}
+  {{ set_p_kv('router_id', s.settings) }}
+}
+  {% endif -%}
+
+  {%- if s.type == 'vrrp_instance' %}
+{{ '\n# ' ~ s.comment|default('(No section comment provided)') }}
+{{ s.type }} {{ s.name|default('aninstancewithoutaname') }} {
+  {{ set_p_kv('state', s.settings) }}
+  {{ set_p_kv('smtp_alert', s.settings) }}
+  {{ set_p_kv('interface', s.settings) }}
+  {{ set_p_kv('virtual_router_id', s.settings) }}
+  {{ set_p_kv('priority', s.settings) }}
+  {{ set_p_kv('advert_int', s.settings) }}
+{{ set_p_blockdict('authentication', s.settings, ['auth_type', 'auth_pass'])|indent(2, True) }}
+{{ set_p_blocklist('virtual_ipaddress', s.settings)|indent(2, True) }}
+}
+  {% endif -%}
+{%- endfor -%}
