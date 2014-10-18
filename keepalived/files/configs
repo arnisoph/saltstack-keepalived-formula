@@ -1,4 +1,4 @@
-{%- set configs = salt['pillar.get']('keepalived:configs:' ~ config ~ ':sections', []) -%}
+{%- set configs = salt['pillar.get']('keepalived:configs:' ~ config ~ ':sections', []) -%}
 
 {%- macro set_p_kv(paramname, dictvar) -%}
   {%- if paramname in dictvar -%}
