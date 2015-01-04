@@ -2,6 +2,9 @@
 keepalived-formula
 ==================
 
+.. image:: https://api.flattr.com/button/flattr-badge-large.png
+    :target: https://flattr.com/submit/auto?user_id=bechtoldt&url=https%3A%2F%2Fgithub.com%2Fbechtoldt%2Fsaltstack-keepalived-formula
+
 Salt Stack Formula to set up and configure keepalived, a router and loadbalancer based on VRRP
 
 NOTICE BEFORE YOU USE
