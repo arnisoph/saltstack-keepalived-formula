@@ -63,7 +63,8 @@ Salt Compatibility
 
 Tested with:
 
-* 2014.1.x
+* 2014.1
+* 2014.7
 
 OS Compatibility
 ================

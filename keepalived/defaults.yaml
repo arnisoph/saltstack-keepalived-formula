@@ -1,7 +1,8 @@
 {% load_yaml as rawmap %}
 Debian:
   pkgs: []
-  service: []
+  service:
+    signame: /usr/sbin/keepalived
   config:
     manage:
       - keepalived_conf

@@ -3,7 +3,6 @@
 {% from "keepalived/defaults.yaml" import rawmap with context %}
 {% set datamap = salt['grains.filter_by'](rawmap, merge=salt['pillar.get']('keepalived:lookup')) %}
 
-{% set configs = salt['pillar.get']('keepalived:configs', {}).items() -%}
 
 keepalived:
   pkg:
@@ -13,13 +12,8 @@ keepalived:
     - running
     - name: {{ datamap.service.name|default('keepalived') }}
     - enable: {{ datamap.service.enable|default(True) }}
-    - watch:
-{% for c in datamap.config.manage|default([]) %}
-      - file: {{ c }}
-{% endfor %}
-{% for k, v in configs %}
-      - file: {{ k }}
-{% endfor %}
+    {# TODO: service doesn't have a status command. Is this Debian specifc? #}
+    - sig: {{ datamap.service.signame }}
     - require:
       - pkg: keepalived
 
@@ -33,7 +27,11 @@ keepalived_conf:
     - group: {{ datamap.config.keepalived_conf.group|default('root') }}
     - contents: |
         include /etc/keepalived/conf.d/*.conf
+    - watch_in:
+      - service: keepalived
 {% endif %}
+
+{% set configs = salt['pillar.get']('keepalived:configs', {}).items() -%}
 
 {% for k, v in configs %}
 {{ k }}:
@@ -48,4 +46,6 @@ keepalived_conf:
     - group: {{ datamap.config.configs.group|default('root') }}
     - context:
       config: {{ k }}
+    - watch_in:
+      - service: keepalived
 {% endfor %}
