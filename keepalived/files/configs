@@ -50,6 +50,7 @@
 {{ set_p_blockdict('authentication', s.settings, ['auth_type', 'auth_pass'])|indent(2, True) }}
 {{ set_p_blocklist('virtual_ipaddress', s.settings)|indent(2, True) }}
 {{ set_p_blocklist('unicast_peer', s.settings)|indent(2, True) }}
+{{ set_p_blocklist('track_script', s.settings)|indent(2, True) }}
 }
   {% endif -%}
   {%- if s.type == 'virtual_server' %}
