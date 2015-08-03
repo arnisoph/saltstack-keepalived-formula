@@ -49,6 +49,7 @@
   {{ set_p_kv('advert_int', s.settings) }}
 {{ set_p_blockdict('authentication', s.settings, ['auth_type', 'auth_pass'])|indent(2, True) }}
 {{ set_p_blocklist('virtual_ipaddress', s.settings)|indent(2, True) }}
+{{ set_p_blocklist('unicast_peer', s.settings)|indent(2, True) }}
 }
   {% endif -%}
   {%- if s.type == 'virtual_server' %}
@@ -58,6 +59,13 @@
   # {{ s.type }} not implemented yet
   {% endif -%}
   {%- if s.type == 'vrrp_script' %}
-  # {{ s.type }} not implemented yet
+{{ '\n# ' ~ s.comment|default('(No section comment provided)') }}
+{{ s.type }} {
+  {{ set_p_kv('script', s.settings) }}
+  {{ set_p_kv('interval', s.settings) }}
+  {{ set_p_kv('weight', s.settings) }}
+  {{ set_p_kv('fall', s.settings) }}
+  {{ set_p_kv('rise', s.settings) }}
+}
   {% endif -%}
 {%- endfor -%}

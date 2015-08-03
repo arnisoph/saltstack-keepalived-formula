@@ -13,7 +13,9 @@ keepalived:
     - name: {{ datamap.service.name|default('keepalived') }}
     - enable: {{ datamap.service.enable|default(True) }}
     {# TODO: service doesn't have a status command. Is this Debian specifc? #}
+    {% if grains['os_family'] == 'Debian' %}
     - sig: {{ datamap.service.signame }}
+    {% endif %}
     - require:
       - pkg: keepalived
 

@@ -8,4 +8,13 @@ Debian:
       - keepalived_conf
     keepalived_conf: {}
     configs: {}
+RedHat:
+  pkgs: ['keepalived']
+  service:
+    name: keepalived
+  config:
+    manage:
+      - keepalived_conf
+    keepalived_conf: {}
+    configs: {}
 {% endload %}
