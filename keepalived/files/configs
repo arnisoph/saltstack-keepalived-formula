@@ -61,7 +61,7 @@
   {% endif -%}
   {%- if s.type == 'vrrp_script' %}
 {{ '\n# ' ~ s.comment|default('(No section comment provided)') }}
-{{ s.type }} {
+{{ s.type }} {{ s.name|default('aninstancewithoutaname') }} {
   {{ set_p_kv('script', s.settings) }}
   {{ set_p_kv('interval', s.settings) }}
   {{ set_p_kv('weight', s.settings) }}
