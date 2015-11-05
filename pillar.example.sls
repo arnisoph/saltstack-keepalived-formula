@@ -29,6 +29,19 @@ keepalived:
               auth_pass: foobar
             virtual_ipaddress:
               - 10.1.0.26 dev eth0
+            unicast_peer:
+              - 10.1.0.27
+    03_vrrp_scripts:
+      sections:
+        - comment: Check status
+          name: check
+          type: vrrp_script
+          settings:
+           script: service httpd status
+           interval: 10
+           weight: 2
+           fall: 2
+           rise: 2
 
 {# Backup Host (low prio) #}
 keepalived:
@@ -61,3 +74,16 @@ keepalived:
               auth_pass: foobar
             virtual_ipaddress:
               - 10.1.0.26 dev eth0
+            unicast_peer:
+              - 10.1.0.28
+    03_vrrp_scripts:
+      sections:
+        - comment: Check status
+          name: check
+          type: vrrp_script
+          settings:
+           script: service httpd status
+           interval: 10
+           weight: 2
+           fall: 2
+           rise: 2
